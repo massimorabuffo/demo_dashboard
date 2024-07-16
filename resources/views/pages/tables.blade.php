@@ -134,10 +134,17 @@
                                                     <script>
                                                        async function addUser() {
                                                         event.preventDefault();
+
                                                         const author = document.getElementById("author").value;
                                                         const function1 = document.getElementById("function").value;
                                                         const status = document.getElementById("status").value;
                                                         const employed = document.getElementById("employed").value;
+
+                                                        // controllare campi obbligatori
+                                                        if (author === '' || author === null) {
+                                                            alert('Compila il campo author');
+                                                            return false;
+                                                        }
 
                                                         const dataObject = {author: author, function: function1, status: status, employed: employed};
                                                             try{
@@ -150,7 +157,11 @@
                                                                     body: JSON.stringify(dataObject),
                                                                 });
                                                                 const jsonResponse = await request1.json() 
-                                                                console.log(jsonResponse);                                             
+                                                                if (jsonResponse.status) {
+                                                                    alert('TUTTO OK!!!');
+                                                                } else {
+                                                                    alert(jsonResponse.message);
+                                                                }                                         
                                                             }catch(error){
                                                                 //console.error(error)
                                                             }

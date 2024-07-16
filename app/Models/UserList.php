@@ -11,5 +11,5 @@ class UserList extends Model
 
     protected $table = 'user_list';
 
-
+    public $timestamps = false;
 }
