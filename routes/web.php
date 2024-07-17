@@ -23,7 +23,6 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
             
 Route::get('/get-user-list', [DashboardController::class, 'getUserList'])->name('user_list');
-Route::get('/add-user', [DashboardController::class, 'addUser'])->name('add_user');
 Route::post('/add-user', [DashboardController::class, 'addUserPost'])->name('add_user_post');
 
 

@@ -21,40 +21,45 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function addUser()
-    {
-
-        $userList = \App\Models\UserList::all();
-
-        return view('pages.tables', [
-            'userList' => $userList,
-        ]);
-    }
-
     public function addUserPost(Request $request) {
         // var_dump($request->all()); die();
         // return response()->json($request->all());
         {
-            if (is_null($request->function)) {
+            // Controllo di un campo dati nel backend, commentato perché il controllo è stato aggiunto nel front end
+
+            // if (is_null($request->function)) {
+            //     return response()->json([
+            //         'status' => false,
+            //         'message' => 'Il campo function è obbligatorio.',
+            //     ]);
+            // }
+     
+            try {
+                $user = new UserList;
+        
+                $user->author = $request->author;
+                $user->function = $request->function;
+                $user->status = $request->status;
+                $user->employed = $request->employed;
+                
+                $saved = $user->save();
+
+                if ($saved) {
+                    return response()->json([
+                        'status' => true,
+                    ]);
+                } else {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Si è verificato un errore imprevisto.',
+                    ]);
+                }
+            } catch (\Exception $e) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Il campo function è obbligatorio.',
+                    'message' => 'Utente già registrato.',
+                    //'message' => $e->getMessage(),
                 ]);
-            }
-            
-            $user = new UserList;
-     
-            $user->author = $request->author;
-            $user->function = $request->function;
-            $user->status = $request->status;
-            $user->employed = $request->employed;
-     
-            $saved = $user->save();
-
-            if ($saved) {
-                return response()->json(true);
-            } else {
-                return response()->json(false);
             }
      
             //return response()->json($request->all());
