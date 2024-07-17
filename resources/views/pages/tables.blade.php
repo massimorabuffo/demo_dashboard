@@ -1,5 +1,5 @@
 <x-layout bodyClass="g-sidenav-show  bg-gray-200">
-        <x-navbars.sidebar activePage="tables"></x-navbars.sidebar>
+        <x-navbars.sidebar activePage="/get-user-list"></x-navbars.sidebar>
         <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
             <!-- Navbar -->
             <x-navbars.navs.auth titlePage="Tables"></x-navbars.navs.auth>
@@ -11,7 +11,7 @@
                     }
                 ?>
              </div>
-            <div class="container-fluid py-4">
+            <div id="tableContainer" class="container-fluid py-4">
                 <div class="row">
                     <div class="col-12">
                         <div class="card my-4">
@@ -22,6 +22,49 @@
                             </div>
                             <div class="card-body px-0 pb-2">
                                 <div class="table-responsive p-0">
+                                <table class="table align-items-center mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th
+                                                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                    Author</th>
+                                                <th
+                                                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                    Function</th>
+                                                <th
+                                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                    Status</th>
+                                                <th
+                                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                    Employed</th>
+                                                <th class="text-secondary opacity-7"></th>
+                                                <th>
+                                                    <!-- Button trigger modal -->
+                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                    Add User
+                                                    </button>
+                                                </th>
+                                            </tr>                                            
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                    <script>
+                                        $(function() {
+                                            await updateUserListTable();
+                                        });
+
+                                        async function updateUserListTable() {
+                                            try{
+                                                const request = await fetch("http://127.0.0.1:8000/get-user-list2");
+                                                const response = await request.json();
+                                                console.log(request);
+                                            }catch(error){
+                                                console.error(error);
+                                            }
+                                        }
+                                    </script>
+
                                     <table class="table align-items-center mb-0">
                                         <thead>
                                             <tr>
@@ -188,15 +231,18 @@
                         alert.classList.add("alert-success")
                         alert.innerHTML = "Utente registrato correttamente! A breve la pagina verrà aggiornata.";
                         alert.style.display = "block";
-                        async function createCustomTimeout(seconds) {
-                            return new Promise((resolve, reject) => {
-                                setTimeout(() => {
-                                    location.reload();
-                                    resolve();
-                                    }, seconds * 1000);
-                                });
-                        }
-                        await createCustomTimeout(3);     
+                        // async function createCustomTimeout(seconds) {
+                        //     return new Promise((resolve, reject) => {
+                        //         setTimeout(() => {
+                        //             location.reload();
+                        //             resolve();
+                        //             }, seconds * 1000);
+                        //         });
+                        // }
+                        // await createCustomTimeout(3);
+
+                        await updateUserListTable();
+
                     } else {
                         alert.classList.remove("alert-success");
                         alert.classList.add("alert-danger")

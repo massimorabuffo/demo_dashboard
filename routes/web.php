@@ -24,6 +24,7 @@ use App\Http\Controllers\SessionsController;
             
 Route::get('/get-user-list', [DashboardController::class, 'getUserList'])->name('user_list');
 Route::post('/add-user', [DashboardController::class, 'addUserPost'])->name('add_user_post');
+Route::get('get-user-list2', [DashboardController::class, 'getUserList'])->name('user_list2');
 
 
 Route::get('/', function () {return redirect('sign-in');})->middleware('guest');
@@ -48,8 +49,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('billing', function () {
 		return view('pages.billing');
 	})->name('billing');
-	Route::get('tables', function () {
-		return view('pages.tables');
+	Route::get('user_list', function () {
+		return view('pages.user_list');
 	})->name('tables');
 	Route::get('rtl', function () {
 		return view('pages.rtl');
