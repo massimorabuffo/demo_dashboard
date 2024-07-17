@@ -55,10 +55,14 @@ class DashboardController extends Controller
                     ]);
                 }
             } catch (\Exception $e) {
+                if (str_contains($e->getMessage(), "Invalid datetime format")) { 
+                    $message = "Formato data invalido. Inserisci la data nel seguente formato: 'yyyy-mm-dd'.";
+                } else if (str_contains($e->getMessage(), "Duplicate entry")) {
+                    $message = "Utente già registrato.";
+                }
                 return response()->json([
                     'status' => false,
-                    'message' => 'Utente già registrato.',
-                    //'message' => $e->getMessage(),
+                    'message' => $message,
                 ]);
             }
      

@@ -78,7 +78,8 @@
                                                 <td class="align-middle">
                                                     <a href="javascript:;"
                                                         class="text-secondary font-weight-bold text-xs"
-                                                        data-toggle="tooltip" data-original-title="Edit user">
+                                                        data-toggle="tooltip" data-original-title="Edit user" 
+                                                        onclick=editUser()>
                                                         Edit
                                                     </a>
                                                 </td>
@@ -132,71 +133,88 @@
         </div>
     
     <script>
+        const alert = document.getElementById("alert-success");
         async function addUser() {
-        event.preventDefault();
+            event.preventDefault();
 
-        const author = document.getElementById("author").value;
-        const function1 = document.getElementById("function").value;
-        const status = document.getElementById("status").value;
-        const employed = document.getElementById("employed").value;
+            const author = document.getElementById("author").value;
+            const function1 = document.getElementById("function").value;
+            const status = document.getElementById("status").value;
+            const employed = document.getElementById("employed").value;
 
-        // controllare campi obbligatori
-        if (author === '' || author === null) {
-            alert('Compila il campo "author"');
-            return false;
-        }
-        if (function1 === '' || function1 === null) {
-            alert('Compila il campo "function"');
-            return false;
-        }
-        if (status === '' || status === null) {
-            alert('Compila il campo "status"');
-            return false;
-        }
-        if (employed === '' || employed === null) {
-            alert('Compila il campo "employed"');
-            return false;
-        }
-
-        const dataObject = {author: author, function: function1, status: status, employed: employed};
-            try{
-                const request1 = await fetch("http://127.0.0.1:8000/add-user", {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-Token': '{{ csrf_token() }}',
-                    },
-                    body: JSON.stringify(dataObject),
-                });
-                const jsonResponse = await request1.json();
-                const alert = document.getElementById("alert-success");
-                if (jsonResponse.status) {
-                    alert.classList.remove("alert-danger");
-                    alert.classList.add("alert-success")
-                    alert.innerHTML = "Utente registrato correttamente! A breve la pagina verrà aggiornata.";
-                    alert.style.display = "block";
-                    async function createCustomTimeout(seconds) {
-                        return new Promise((resolve, reject) => {
-                            setTimeout(() => {
-                                location.reload();
-                                resolve();
-                                }, seconds * 1000);
-                            });
-                    }
-                    await createCustomTimeout(3);     
-                } else {
-                    alert.classList.remove("alert-success");
-                    alert.classList.add("alert-danger")
-                    alert.innerHTML = jsonResponse.message;
-                    alert.style.display = "block";
-                }                                         
-            }catch(error){
-                console.error(error);
+            // controllare campi obbligatori
+            if (author === '' || author === null) {
+                alert.classList.remove("alert-success");
+                alert.classList.add("alert-warning")
+                alert.innerHTML = "Compila il campo 'author'";
+                alert.style.display = "block";
+                return false;
             }
+            if (function1 === '' || function1 === null) {
+                alert.classList.remove("alert-success");
+                alert.classList.add("alert-warning")
+                alert.innerHTML = "Compila il campo 'function'";
+                alert.style.display = "block";
+                return false;
+            }
+            if (status === '' || status === null) {
+                alert.classList.remove("alert-success");
+                alert.classList.add("alert-warning")
+                alert.innerHTML = "Compila il campo 'status'";
+                alert.style.display = "block";
+                return false;
+            }
+            if (employed === '' || employed === null) {
+                alert.classList.remove("alert-success");
+                alert.classList.add("alert-warning")
+                alert.innerHTML = "Compila il campo 'employed'";
+                alert.style.display = "block";
+                return false;
+            }
+
+            const dataObject = {author: author, function: function1, status: status, employed: employed};
+                try{
+                    const request1 = await fetch("http://127.0.0.1:8000/add-user", {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-Token': '{{ csrf_token() }}',
+                        },
+                        body: JSON.stringify(dataObject),
+                    });
+                    const jsonResponse = await request1.json();
+                    if (jsonResponse.status) {
+                        alert.classList.remove("alert-danger");
+                        alert.classList.add("alert-success")
+                        alert.innerHTML = "Utente registrato correttamente! A breve la pagina verrà aggiornata.";
+                        alert.style.display = "block";
+                        async function createCustomTimeout(seconds) {
+                            return new Promise((resolve, reject) => {
+                                setTimeout(() => {
+                                    location.reload();
+                                    resolve();
+                                    }, seconds * 1000);
+                                });
+                        }
+                        await createCustomTimeout(3);     
+                    } else {
+                        alert.classList.remove("alert-success");
+                        alert.classList.add("alert-danger")
+                        alert.innerHTML = jsonResponse.message;
+                        alert.style.display = "block";
+                    }                                         
+                }catch(error){
+                    console.error(error);
+                }
         }
 
         const clearFields = () => {
             document.getElementById("user-form").reset();
+            alert.style.display = "none";
+        }
+        
+        const editUser = () => {
+
         }
     </script>
 </x-layout>
