@@ -12,13 +12,29 @@ class DashboardController extends Controller
         return view('dashboard.index');
     }
 
-    public function getUserList()
+    public function getUserList(Request $request)
+    {
+        try{
+            $userList = \App\Models\UserList::all();
+    
+            return view('pages.tables', [
+                'userList' => $userList,
+            ]);
+
+        }catch (\Exception $e) {
+        
+            return response()->json([
+                'status' => false,
+                'message' => $e,
+            ]);
+        }
+    }
+
+    public function getUserList2(Request $request)
     {
         $userList = \App\Models\UserList::all();
 
-        return view('pages.tables', [
-            'userList' => $userList,
-        ]);
+        return response()->json($userList);
     }
 
     public function addUserPost(Request $request) {
